@@ -1,0 +1,13 @@
+beautifulsoup4
+black
+django-debug-toolbar
+django-extensions
+freezegun
+pydocstyle
+pylint
+pylint-django
+pytest
+pytest-cov
+pytest-django
+pytest-randomly
+pytest-sugar

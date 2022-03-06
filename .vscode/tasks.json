@@ -1,0 +1,79 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "DJANGO_SETTINGS_MODULE": "comics.settings.local",
+            "TEST_PACKAGES": "comics/tests",
+            "SERVER_PORT": "6100",
+            "MODULE_NAME": "comics"
+        },
+    },
+    "tasks": [
+        {
+            "label": "Run Server",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} manage.py runserver",
+            "presentation": {
+                "group": "groupServerStuff"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Django Shell",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} manage.py shell_plus",
+            "presentation": {
+                "focus": true,
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Healthcheck (requires running server)",
+            "type": "shell",
+            "command": "curl http://127.0.0.1:$SERVER_PORT/health",
+            "presentation": {
+                "group": "groupServerStuff",
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "DB Shell",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} manage.py dbshell",
+            "presentation": {
+                "focus": true,
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Unit Tests",
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "command": "${command:python.interpreterPath} -m pytest -rs -vv --lf ."
+        },
+        {
+            "label": "Pip Install Python package",
+            "type": "shell",
+            "command": "${command:python.interpreterPath} -m pip install ${input:packageName}"
+        },
+        {
+            "label": "Generate Coverage Report",
+            "type": "shell",
+            "group": "test",
+            "command": "${command:python.interpreterPath} -m pytest --cov=$MODULE_NAME --cov-report html:./test-coverage --cov-report xml:./test-coverage/coverage.xml --junitxml=./test-reports/test_report.xml --ds=$DJANGO_SETTINGS_MODULE $TEST_PACKAGES && open ./test-coverage/index.html"
+        },
+    ],
+    "inputs": [
+        {
+            "id": "packageName",
+            "type": "promptString",
+            "description": "Name of package to install?",
+        },
+    ]
+}
