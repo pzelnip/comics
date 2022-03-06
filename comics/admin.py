@@ -3,54 +3,45 @@ from django.conf import settings
 
 from .models import Comic
 
-# admin.site.site_url =
-admin.site.site_header = settings.PROJECT_NAME
+admin.site.site_header = settings.PROJECT_NAME.title()
 admin.site.index_title = "Administration"
 
 
 class ComicAdmin(admin.ModelAdmin):
     model = Comic
+    ordering = ("issue_number",)
+    exclude = ("issue_number",)
+    list_display = (
+        "issue",
+        "year_released",
+        "key_issue",
+        "own",
+        "own_slabbed",
+        "slab_grade",
+    )
+    search_fields = ["issue_number"]
 
+    list_filter = ("key_issue", "own", "own_slabbed", "slab_grade", "year_released")
 
-# class EnvironmentAdmin(admin.ModelAdmin):
-#     model = Environment
-#     list_display = ("name", "description")
+    # fieldsets = (
+    #     (
+    #         "General Details",
+    #         {
+    #             "fields": (
+    #                 "year_released",
+    #                 "key_issue",
+    #                 "own",
+    #                 "own_slabbed",
+    #                 "slab_grade",
+    #                 "notes",
+    #             ),
+    #         },
+    #     ),
+    # )
 
-
-# class DeploymentAdmin(admin.ModelAdmin):
-#     model = Deployment
-#     list_display = ("id", "deployed_at", "service", "environment", "region")
-#     readonly_fields = []
-
-#     list_filter = (
-#         "service",
-#         "environment",
-#         "region",
-#     )
-#     search_fields = ["service", "environment", "region"]
-
-#     def has_add_permission(self, request):
-#         return False
-
-#     def has_delete_permission(self, request, obj=None):
-#         return False
-
-#     def get_readonly_fields(self, request, obj=None):
-#         return (
-#             list(self.readonly_fields)
-#             + [field.name for field in obj._meta.fields]
-#             + [field.name for field in obj._meta.many_to_many]
-#         )
-
-
-# class RegionAdmin(admin.ModelAdmin):
-#     model = Region
-
-
-# class ServiceAdmin(admin.ModelAdmin):
-#     model = Service
-#     list_display = ("service", "pauseable", "description")
-#     search_fields = ["service", "description"]
+    @classmethod
+    def issue(cls, obj):
+        return str(obj)
 
 
 # Register your models here.
