@@ -1,5 +1,6 @@
-from django.contrib import admin
 from django.conf import settings
+from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import Comic
 
@@ -20,28 +21,36 @@ class ComicAdmin(admin.ModelAdmin):
         "slab_grade",
     )
     search_fields = ["issue_number"]
+    readonly_fields = ("issue_cover",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "year_released",
+                    "issue_cover",
+                    "key_issue",
+                    "own",
+                    "own_slabbed",
+                    "slab_grade",
+                    "notes",
+                ),
+            },
+        ),
+        ("Extra Controls", {"classes": ("collapse",), "fields": ("cover",)}),
+    )
 
     list_filter = ("key_issue", "own", "own_slabbed", "slab_grade", "year_released")
-
-    # fieldsets = (
-    #     (
-    #         "General Details",
-    #         {
-    #             "fields": (
-    #                 "year_released",
-    #                 "key_issue",
-    #                 "own",
-    #                 "own_slabbed",
-    #                 "slab_grade",
-    #                 "notes",
-    #             ),
-    #         },
-    #     ),
-    # )
 
     @classmethod
     def issue(cls, obj):
         return str(obj)
+
+    @classmethod
+    def issue_cover(cls, obj):
+        return mark_safe(
+            f"""<a href="{obj.cover.url}"><img src="{obj.cover.url}" width="150" /></a>"""
+        )
 
 
 # Register your models here.

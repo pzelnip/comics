@@ -13,6 +13,7 @@ CGC_GRADES = [
 
 class Comic(models.Model):
     issue_number = models.IntegerField(null=False, unique=True)
+    cover = models.ImageField(null=True, blank=True, upload_to="comic_covers/")
     year_released = models.IntegerField(blank=True, null=True)
     key_issue = models.BooleanField(default=False)
     own = models.BooleanField(default=False)
@@ -24,4 +25,7 @@ class Comic(models.Model):
     # estimated_cost =
 
     def __str__(self):
-        return f"Uncanny X-Men #{self.issue_number}"
+        label = f"X-Men #{self.issue_number}"
+        if self.issue_number >= 114:
+            label = f"Uncanny {label}"
+        return label

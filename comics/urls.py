@@ -19,12 +19,13 @@ from django.views.generic.base import RedirectView
 from django.conf import settings
 
 from comics.views import status
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("mgmt/", admin.site.urls, name="admin"),
     path("", RedirectView.as_view(url=reverse_lazy("admin:index"))),
     path("health", status.health, name="health"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
