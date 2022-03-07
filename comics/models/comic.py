@@ -26,6 +26,6 @@ class Comic(models.Model):
 
     def __str__(self):
         label = f"X-Men #{self.issue_number}"
-        if self.issue_number >= 114:
+        if self.issue_number >= 139:
             label = f"Uncanny {label}"
         return label

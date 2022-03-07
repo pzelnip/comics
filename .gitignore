@@ -126,3 +126,4 @@ dbbackup
 .vscode/tasks-context.json
 comics-log.txt
 comics.sqlite3
+comics/media/comic_covers/*
