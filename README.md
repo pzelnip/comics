@@ -5,7 +5,7 @@ Django app.
 
 ## Screenshot
 
-![Django admin](docs/image.png)
+![Django admin](docs/admin.png)
 
 ## Updating dependencies
 
