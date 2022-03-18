@@ -1,6 +1,11 @@
 # Comics Project
 
-Just a skeleton Django project I use as a starting point.
+I collect comics.  I want to be able to track which ones I own. Hence, this
+Django app.
+
+## Screenshot
+
+![Django admin](docs/image.png)
 
 ## Updating dependencies
 
