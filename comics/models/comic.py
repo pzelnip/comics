@@ -11,15 +11,29 @@ CGC_GRADES = [
 ]
 
 
+class Series(models.Model):
+    class Meta:
+        verbose_name_plural = "Series"
+
+    title = models.CharField(max_length=150, unique=True, null=False)
+    slug = models.CharField(max_length=15, unique=True, null=False)
+
+    def __str__(self):
+        return self.title
+
+
 class Comic(models.Model):
+    series = models.ForeignKey(Series, on_delete=models.CASCADE)
     issue_number = models.IntegerField(null=False, unique=True)
     year_released = models.IntegerField(blank=True, null=True)
     key_issue = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
-    # slug = models.CharField(max_length=15, unique=True, null=False, default=slug_comic)
     # estimated_cost =
 
     def __str__(self):
+        if self.series.slug != "xmen":
+            return f"{self.series.title} #{self.issue_number}"
+
         label = f"X-Men #{self.issue_number}"
         if self.issue_number >= 139:
             label = f"Uncanny {label}"
