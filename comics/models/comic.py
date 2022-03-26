@@ -13,15 +13,10 @@ CGC_GRADES = [
 
 class Comic(models.Model):
     issue_number = models.IntegerField(null=False, unique=True)
-    cover = models.ImageField(null=True, blank=True, upload_to="comic_covers/")
     year_released = models.IntegerField(blank=True, null=True)
     key_issue = models.BooleanField(default=False)
-    own = models.BooleanField(default=False)
-    own_slabbed = models.BooleanField(default=False)
-    slab_grade = models.DecimalField(
-        max_digits=2, decimal_places=1, choices=CGC_GRADES, null=True, blank=True
-    )
     notes = models.TextField(blank=True)
+    # slug = models.CharField(max_length=15, unique=True, null=False, default=slug_comic)
     # estimated_cost =
 
     def __str__(self):
@@ -29,3 +24,16 @@ class Comic(models.Model):
         if self.issue_number >= 139:
             label = f"Uncanny {label}"
         return label
+
+
+class Copy(models.Model):
+    class Meta:
+        verbose_name_plural = "Copies"
+
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
+    slabbed = models.BooleanField(default=False)
+    grade = models.DecimalField(
+        max_digits=2, decimal_places=1, choices=CGC_GRADES, null=True, blank=True
+    )
+    notes = models.TextField(blank=True)
+    # price_paid

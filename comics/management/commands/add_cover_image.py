@@ -1,3 +1,12 @@
+"""
+
+THIS IS DEPRECATED AND NO LONGER NEEDED.
+
+Now covers are just placed in static/covers, and will be loaded
+if present.
+"""
+
+
 from contextlib import suppress
 from pathlib import Path
 
