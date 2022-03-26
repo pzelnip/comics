@@ -23,7 +23,12 @@ class Series(models.Model):
 
 
 class Comic(models.Model):
-    series = models.ForeignKey(Series, on_delete=models.CASCADE)
+    series = models.ForeignKey(
+        Series,
+        on_delete=models.CASCADE,
+        null=False,
+        default=Series.objects.get(title="Unknown", slug="unkn").id,
+    )
     issue_number = models.IntegerField(null=False, unique=True)
     year_released = models.IntegerField(blank=True, null=True)
     key_issue = models.BooleanField(default=False)

@@ -13,6 +13,8 @@ def create_xmen_series(apps, schema_editor):
         comic.series = series
         comic.save()
 
+    Series(title="Unknown", slug="unkn").save()
+
 
 def delete_xmen_series(apps, schema_editor):
     Series = apps.get_model("comics", "Series")
@@ -23,6 +25,7 @@ def delete_xmen_series(apps, schema_editor):
         comic.save()
 
     Series.objects.filter(title="Uncanny X-Men", slug="xmen").delete()
+    Series.objects.filter(title="Unknown", slug="unkn").delete()
 
 
 class Migration(migrations.Migration):
