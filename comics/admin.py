@@ -58,8 +58,9 @@ class ComicAdmin(admin.ModelAdmin):
 
     @classmethod
     def issue_cover(cls, obj):
-        path = f"{settings.STATIC_ROOT}/covers/xmen_{obj.issue_number}.jpg"
-        url = static("covers/xmen_100.jpg")
+        filename = f"{obj.series.slug}_{obj.issue_number}"
+        path = f"{settings.STATIC_ROOT}/covers/{filename}.jpg"
+        url = static(f"covers/{filename}.jpg")
         path = Path(path)
 
         return (
