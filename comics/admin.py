@@ -3,6 +3,7 @@ from pathlib import Path
 from django.conf import settings
 from django.contrib import admin
 from django.templatetags.static import static
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from .models import Comic, Copy, Series
@@ -47,7 +48,6 @@ class ComicAdmin(admin.ModelAdmin):
                 ),
             },
         ),
-        # ("Extra Controls", {"classes": ("collapse",), "fields": ("cover",)}),
     )
 
     list_filter = ("key_issue", "year_released")
@@ -69,34 +69,29 @@ class ComicAdmin(admin.ModelAdmin):
             else "-"
         )
 
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+
+        comic = Comic.objects.get(id=object_id)
+        extra_context = extra_context or {}
+        extra_context["new_url"] = reverse(
+            f"admin:{Copy._meta.app_label}_{Copy._meta.model_name}_add"
+        )
+        copies = comic.copy_set.all()
+        extra_context["copies"] = copies
+        extra_context[
+            "base_edit_url"
+        ] = f"admin:{Copy._meta.app_label}_{Copy._meta.model_name}_change"
+
+        return super().change_view(request, object_id, form_url, extra_context)
+
 
 class CopyAdmin(admin.ModelAdmin):
     model = Copy
-    # ordering = ("issue_number",)
-    # exclude = ("issue_number",)
     list_display = (
         "comic",
         "slabbed",
         "grade",
     )
-    # search_fields = ["issue_number"]
-    # readonly_fields = ("issue_cover",)
-    # fieldsets = (
-    #     (
-    #         None,
-    #         {
-    #             "fields": (
-    #                 "year_released",
-    #                 "issue_cover",
-    #                 "key_issue",
-    #                 "notes",
-    #             ),
-    #         },
-    #     ),
-    #     ("Extra Controls", {"classes": ("collapse",), "fields": ("cover",)}),
-    # )
-
-    # list_filter = ("key_issue", "year_released")
 
     @classmethod
     def issue(cls, obj):

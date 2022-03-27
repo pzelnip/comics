@@ -56,3 +56,7 @@ class Copy(models.Model):
     )
     notes = models.TextField(blank=True)
     # price_paid
+
+    @property
+    def abbreviated_notes(self):
+        return self.notes.replace("\r", "").replace("\n", "")[:50]
