@@ -27,7 +27,6 @@ class Comic(models.Model):
         Series,
         on_delete=models.CASCADE,
         null=False,
-        default=Series.objects.get(title="Unknown", slug="unkn").id,
     )
     issue_number = models.IntegerField(null=False, unique=True)
     year_released = models.IntegerField(blank=True, null=True)
