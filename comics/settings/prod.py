@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
 
 # TODO: update this with appropriate domain(s)
-ALLOWED_HOSTS = [".mydomain.com", "localhost", "127.0.0.1", "[::1]"]
+ALLOWED_HOSTS = ["pzelnip.pythonanywhere.com", "localhost", "127.0.0.1", "[::1]"]
 
 
 # Application definition
