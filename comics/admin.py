@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 
 from .models import Comic, Copy, Series
@@ -70,12 +71,15 @@ class ComicAdmin(admin.ModelAdmin):
         )
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
-
         comic = Comic.objects.get(id=object_id)
         extra_context = extra_context or {}
-        extra_context["new_url"] = reverse(
-            f"admin:{Copy._meta.app_label}_{Copy._meta.model_name}_add"
+        extra_context["new_url"] = (
+            reverse(
+                f"admin:{Copy._meta.app_label}_{Copy._meta.model_name}_add",
+            )
+            + f"?{urlencode({'comic': comic.id})}"
         )
+
         copies = comic.copy_set.all()
         extra_context["copies"] = copies
         extra_context[
